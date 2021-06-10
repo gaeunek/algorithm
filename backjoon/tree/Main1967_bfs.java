@@ -3,7 +3,7 @@ package tree;
 import java.util.*;
 import java.io.*;
 
-public class Main1967 {
+public class Main1967_bfs {
 	static int n;
 	static List<Edge>[] edgeList;
 	static int[] dist;
