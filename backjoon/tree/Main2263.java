@@ -3,6 +3,7 @@ package tree;
 import java.util.*;
 import java.io.*;
 
+// 시간이 꽤 오래 걸림
 public class Main2263 {
 	static int[] inorder, postorder, preorder;
 	static int n, index;
