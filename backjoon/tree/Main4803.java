@@ -2,21 +2,10 @@ package tree;
 
 import java.util.*;
 import java.io.*;
-/*
- * 9 9
-1 2
-2 3
-3 4
-4 5
-3 5
-6 7
-7 8
-6 8
-8 9
-0 0
- * */
+
+
 public class Main4803 {
-	static List<Integer>[] edgeList;
+	static boolean[][] graph;
 	static boolean[] visited;
 	static int answer;
 
@@ -32,37 +21,31 @@ public class Main4803 {
 
 			n = Integer.parseInt(st.nextToken());
 			m = Integer.parseInt(st.nextToken());
-			
+
 			if (n == 0 && m == 0)
 				break;
 
 			sb.append("Case ").append(count).append(": ");
 
-			edgeList = new ArrayList[n + 1];
-			
-			for (int i = 0; i <= n; i++) {
-				edgeList[i] = new ArrayList<>();
-			}
-			
-			visited = new boolean[n + 1];
+			graph = new boolean[n][n];
+			visited = new boolean[n];
 
 			for (int i = 0; i < m; i++) {
 				st = new StringTokenizer(br.readLine(), " ");
 
-				int a = Integer.parseInt(st.nextToken());
-				int b = Integer.parseInt(st.nextToken());
+				int a = Integer.parseInt(st.nextToken()) - 1;
+				int b = Integer.parseInt(st.nextToken()) - 1;
 
-				edgeList[a].add(b);
+				graph[a][b] = true;
+				graph[b][a] = true;
 			}
-			
+
 			answer = 0;
 
-			for (int i = 1; i <= n; i++) {
-				if(!visited[i]) {
+			for (int i = 0; i < n; i++) {
+				if (!visited[i]) {
 					visited[i] = true;
-					if (bfs(i)) {
-						answer++;
-					}
+					bfs(i);
 				}
 			}
 
@@ -79,24 +62,29 @@ public class Main4803 {
 		System.out.println(sb.toString());
 	}
 
-	public static boolean bfs(int u) {
-		boolean result = true;
+	public static void bfs(int u) {
 		Queue<Integer> queue = new LinkedList<>();
 		queue.add(u);
-		
-		while(!queue.isEmpty()) {
+
+		int edge = 0, node = 0;
+
+		while (!queue.isEmpty()) {
 			int nowV = queue.poll();
-			
-			for(int v : edgeList[nowV]) {
-				if(!visited[v]) {
-					visited[v] = true;
-					queue.add(v);
-				} else {
-					result = false;
+			node++;
+
+			for (int v = 0; v < graph[nowV].length; v++) {
+				if(graph[nowV][v]) {
+					edge++;
+					
+					if (!visited[v]) {
+						visited[v] = true;
+						queue.add(v);
+					}
 				}
 			}
 		}
-		
-		return result;
+
+		if (edge / 2 == node - 1)
+			answer++;
 	}
 }
